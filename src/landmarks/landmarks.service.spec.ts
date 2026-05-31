@@ -12,7 +12,7 @@ describe('LandmarksService', () => {
   let repository: jest.Mocked<Repository<Landmark>>;
 
   const mockLandmark = {
-    slug: 'gostinye-dvory',
+    id: 'gostinye-dvory',
     title: 'Гостиные дворы',
     shortDescription: 'Test',
     yearOfConstruction: '1684 г.',
@@ -76,7 +76,7 @@ describe('LandmarksService', () => {
   it('should return landmark by slug', async () => {
     repository.findOne.mockResolvedValue(mockLandmark);
 
-    const result = await service.findOne(mockLandmark.slug);
+    const result = await service.findOne(mockLandmark.id);
 
     expect(result).toEqual(mockLandmark);
   });

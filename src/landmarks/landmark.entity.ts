@@ -17,8 +17,8 @@ import { Style } from '../references/entities/style.entity.js';
 
 @Entity('landmarks')
 export class Landmark {
-  @PrimaryColumn({ length: 150 })
-  slug: string;
+  @PrimaryColumn({ length: 150, name: 'slug' })
+  id: string;
 
   @Column({ length: 255 })
   title: string;

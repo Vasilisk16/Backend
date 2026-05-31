@@ -35,7 +35,7 @@ describe('LandmarksController', () => {
   });
 
   it('should delegate findOne to service', async () => {
-    const landmark = { slug: 'gostinye-dvory' };
+    const landmark = { id: 'gostinye-dvory' };
     service.findOne.mockResolvedValue(landmark as never);
 
     await expect(controller.findOne('gostinye-dvory')).resolves.toEqual(

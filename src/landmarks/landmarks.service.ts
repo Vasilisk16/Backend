@@ -56,7 +56,7 @@ export class LandmarksService {
 
   async findOne(slug: string) {
     const landmark = await this.landmarkRepository.findOne({
-      where: { slug },
+      where: { id: slug },
       relations: [
         'era',
         'style',

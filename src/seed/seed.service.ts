@@ -76,7 +76,7 @@ export class SeedService implements OnModuleInit {
 
     await this.landmarkRepository.save([
       {
-        slug: 'gostinye-dvory',
+        id: 'gostinye-dvory',
         title: 'Гостиные дворы',
         subtitle: 'Бывшие Русский и Немецкий гостиные дворы',
         shortDescription:
@@ -94,7 +94,7 @@ export class SeedService implements OnModuleInit {
         categories: [categories[2], categories[3]],
       },
       {
-        slug: 'antonievo-siysky-monastery',
+        id: 'antonievo-siysky-monastery',
         title: 'Свято-Троицкий Антониево-Сийский монастырь',
         subtitle: 'Действующий монастырь',
         shortDescription:
@@ -112,7 +112,7 @@ export class SeedService implements OnModuleInit {
         categories: [categories[1]],
       },
       {
-        slug: 'plotnikova-mansion',
+        id: 'plotnikova-mansion',
         title: 'Особняк Е.К. Плотниковой',
         subtitle: 'Гражданская архитектура XIX века',
         shortDescription:

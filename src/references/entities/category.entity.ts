@@ -22,7 +22,7 @@ export class Category {
   @JoinTable({
     name: 'landmark_categories',
     joinColumn: { name: 'category_id', referencedColumnName: 'id' },
-    inverseJoinColumn: { name: 'landmark_id', referencedColumnName: 'slug' },
+    inverseJoinColumn: { name: 'landmark_id', referencedColumnName: 'id' },
   })
   landmarks: Landmark[];
 }

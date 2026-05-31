@@ -12,9 +12,9 @@ export class CreateLandmarkDto {
   @IsString()
   @MaxLength(150)
   @Matches(slugPattern, {
-    message: 'slug must contain only lowercase latin letters, numbers and hyphens',
+    message: 'id must contain only lowercase latin letters, numbers and hyphens',
   })
-  slug: string;
+  id: string;
 
   @IsString()
   @MaxLength(255)
@@ -66,9 +66,9 @@ export class UpdateLandmarkDto {
   @IsString()
   @MaxLength(150)
   @Matches(slugPattern, {
-    message: 'slug must contain only lowercase latin letters, numbers and hyphens',
+    message: 'id must contain only lowercase latin letters, numbers and hyphens',
   })
-  slug?: string;
+  id?: string;
 
   @IsOptional()
   @IsString()
