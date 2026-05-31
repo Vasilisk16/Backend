@@ -35,11 +35,11 @@ describe('LandmarksController', () => {
   });
 
   it('should delegate findOne to service', async () => {
-    const landmark = { id: '11111111-1111-1111-1111-111111111111' };
+    const landmark = { slug: 'gostinye-dvory' };
     service.findOne.mockResolvedValue(landmark as never);
 
-    await expect(
-      controller.findOne('11111111-1111-1111-1111-111111111111'),
-    ).resolves.toEqual(landmark);
+    await expect(controller.findOne('gostinye-dvory')).resolves.toEqual(
+      landmark,
+    );
   });
 });

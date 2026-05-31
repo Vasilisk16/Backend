@@ -1,4 +1,4 @@
-import { Controller, Get, Param, ParseUUIDPipe, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query } from '@nestjs/common';
 import { ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { FindLandmarksQueryDto } from './dto/find-landmarks-query.dto.js';
 import { LandmarksService } from './landmarks.service.js';
@@ -14,9 +14,9 @@ export class LandmarksController {
     return this.landmarksService.findAll(query);
   }
 
-  @Get(':id')
+  @Get(':slug')
   @ApiOkResponse({ description: 'Детальная информация о достопримечательности' })
-  findOne(@Param('id', ParseUUIDPipe) id: string) {
-    return this.landmarksService.findOne(id);
+  findOne(@Param('slug') slug: string) {
+    return this.landmarksService.findOne(slug);
   }
 }

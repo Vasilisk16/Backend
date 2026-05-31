@@ -45,7 +45,7 @@ CREATE TABLE legal_statuses (
 );
 
 CREATE TABLE landmarks (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    slug VARCHAR(150) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     subtitle VARCHAR(255),
     short_description TEXT NOT NULL,
@@ -63,7 +63,7 @@ CREATE TABLE landmarks (
 );
 
 CREATE TABLE landmark_categories (
-    landmark_id UUID NOT NULL REFERENCES landmarks(id) ON DELETE CASCADE,
+    landmark_id VARCHAR(150) NOT NULL REFERENCES landmarks(slug) ON DELETE CASCADE ON UPDATE CASCADE,
     category_id INTEGER NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
     PRIMARY KEY (landmark_id, category_id)
 );

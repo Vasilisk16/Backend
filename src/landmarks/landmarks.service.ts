@@ -54,9 +54,9 @@ export class LandmarksService {
     };
   }
 
-  async findOne(id: string) {
+  async findOne(slug: string) {
     const landmark = await this.landmarkRepository.findOne({
-      where: { id },
+      where: { slug },
       relations: [
         'era',
         'style',
@@ -68,7 +68,7 @@ export class LandmarksService {
     });
 
     if (!landmark) {
-      throw new NotFoundException(`Landmark with id ${id} not found`);
+      throw new NotFoundException(`Landmark with slug "${slug}" not found`);
     }
 
     return landmark;

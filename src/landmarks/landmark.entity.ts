@@ -5,7 +5,7 @@ import {
   JoinColumn,
   ManyToMany,
   ManyToOne,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
   UpdateDateColumn,
 } from 'typeorm';
 import { Architect } from '../references/entities/architect.entity.js';
@@ -17,8 +17,8 @@ import { Style } from '../references/entities/style.entity.js';
 
 @Entity('landmarks')
 export class Landmark {
-  @PrimaryGeneratedColumn('uuid')
-  id: string;
+  @PrimaryColumn({ length: 150 })
+  slug: string;
 
   @Column({ length: 255 })
   title: string;

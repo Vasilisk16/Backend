@@ -35,7 +35,6 @@ const dropStatements = [
 ];
 
 const createStatements = [
-  `CREATE EXTENSION IF NOT EXISTS "pgcrypto"`,
   `CREATE TABLE eras (
     id SERIAL PRIMARY KEY,
     name VARCHAR(100) NOT NULL,
@@ -63,7 +62,7 @@ const createStatements = [
     name VARCHAR(150) NOT NULL
   )`,
   `CREATE TABLE landmarks (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    slug VARCHAR(150) PRIMARY KEY,
     title VARCHAR(255) NOT NULL,
     subtitle VARCHAR(255),
     short_description TEXT NOT NULL,
@@ -80,7 +79,7 @@ const createStatements = [
     updated_at TIMESTAMP NOT NULL DEFAULT NOW()
   )`,
   `CREATE TABLE landmark_categories (
-    landmark_id UUID NOT NULL REFERENCES landmarks(id) ON DELETE CASCADE,
+    landmark_id VARCHAR(150) NOT NULL REFERENCES landmarks(slug) ON DELETE CASCADE ON UPDATE CASCADE,
     category_id INTEGER NOT NULL REFERENCES categories(id) ON DELETE CASCADE,
     PRIMARY KEY (landmark_id, category_id)
   )`,
@@ -155,12 +154,12 @@ const seedStatements = [
   `INSERT INTO legal_statuses (name) VALUES
     ('Федеральный ОКН'), ('Региональный ОКН')`,
   `INSERT INTO landmarks (
-    id, title, subtitle, short_description, full_description,
+    slug, title, subtitle, short_description, full_description,
     year_of_construction, address, image_url,
     era_id, style_id, architect_id, purpose_id, legal_status_id
   ) VALUES
     (
-      'a1111111-1111-4111-8111-111111111111',
+      'gostinye-dvory',
       'Гостиные дворы',
       'Бывшие Русский и Немецкий гостиные дворы',
       'Один из старейших торговых комплексов города на набережной Северной Двины.',
@@ -171,7 +170,7 @@ const seedStatements = [
       1, 1, 1, 1, 1
     ),
     (
-      'b2222222-2222-4222-8222-222222222222',
+      'antonievo-siysky-monastery',
       'Свято-Троицкий Антониево-Сийский монастырь',
       'Действующий монастырь',
       'Один из крупнейших монастырских комплексов Русского Севера XVIII века.',
@@ -182,7 +181,7 @@ const seedStatements = [
       2, 2, NULL, 2, 1
     ),
     (
-      'c3333333-3333-4333-8333-333333333333',
+      'plotnikova-mansion',
       'Особняк Е.К. Плотниковой',
       'Гражданская архитектура XIX века',
       'Каменный особняк купеческой семьи в стиле классицизма.',
@@ -193,10 +192,10 @@ const seedStatements = [
       3, 3, NULL, 3, 2
     )`,
   `INSERT INTO landmark_categories (landmark_id, category_id) VALUES
-    ('a1111111-1111-4111-8111-111111111111', 3),
-    ('a1111111-1111-4111-8111-111111111111', 4),
-    ('b2222222-2222-4222-8222-222222222222', 2),
-    ('c3333333-3333-4333-8333-333333333333', 3)`,
+    ('gostinye-dvory', 3),
+    ('gostinye-dvory', 4),
+    ('antonievo-siysky-monastery', 2),
+    ('plotnikova-mansion', 3)`,
 ];
 
 console.log('Seeding reference data...');

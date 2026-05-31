@@ -1,6 +1,21 @@
-import { IsInt, IsOptional, IsString, IsUrl, MaxLength } from 'class-validator';
+import {
+  IsInt,
+  IsOptional,
+  IsString,
+  IsUrl,
+  Matches,
+  MaxLength,
+} from 'class-validator';
+import { slugPattern } from '../../common/slug.util.js';
 
 export class CreateLandmarkDto {
+  @IsString()
+  @MaxLength(150)
+  @Matches(slugPattern, {
+    message: 'slug must contain only lowercase latin letters, numbers and hyphens',
+  })
+  slug: string;
+
   @IsString()
   @MaxLength(255)
   title: string;
@@ -47,6 +62,14 @@ export class CreateLandmarkDto {
 }
 
 export class UpdateLandmarkDto {
+  @IsOptional()
+  @IsString()
+  @MaxLength(150)
+  @Matches(slugPattern, {
+    message: 'slug must contain only lowercase latin letters, numbers and hyphens',
+  })
+  slug?: string;
+
   @IsOptional()
   @IsString()
   @MaxLength(255)

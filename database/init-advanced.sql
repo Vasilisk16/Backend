@@ -10,14 +10,14 @@ DROP TABLE IF EXISTS landmark_audit_log CASCADE;
 
 CREATE TABLE IF NOT EXISTS landmark_audit_log (
     id SERIAL PRIMARY KEY,
-    landmark_id UUID NOT NULL,
+    landmark_id VARCHAR(150) NOT NULL,
     action VARCHAR(20) NOT NULL,
     changed_at TIMESTAMP NOT NULL DEFAULT NOW()
 );
 
 CREATE OR REPLACE VIEW landmark_card_view AS
 SELECT
-    l.id,
+    l.slug,
     l.title,
     l.year_of_construction,
     l.short_description,
@@ -35,10 +35,10 @@ JOIN eras e ON e.id = l.era_id
 JOIN styles s ON s.id = l.style_id
 JOIN purposes p ON p.id = l.purpose_id
 JOIN legal_statuses ls ON ls.id = l.legal_status_id
-LEFT JOIN landmark_categories lc ON lc.landmark_id = l.id
+LEFT JOIN landmark_categories lc ON lc.landmark_id = l.slug
 LEFT JOIN categories c ON c.id = lc.category_id
 GROUP BY
-    l.id,
+    l.slug,
     l.title,
     l.year_of_construction,
     l.short_description,
@@ -50,7 +50,7 @@ GROUP BY
 
 CREATE OR REPLACE VIEW landmark_detail_view AS
 SELECT
-    l.id,
+    l.slug,
     l.title,
     l.subtitle,
     l.short_description,
@@ -75,10 +75,10 @@ JOIN styles s ON s.id = l.style_id
 LEFT JOIN architects a ON a.id = l.architect_id
 JOIN purposes p ON p.id = l.purpose_id
 JOIN legal_statuses ls ON ls.id = l.legal_status_id
-LEFT JOIN landmark_categories lc ON lc.landmark_id = l.id
+LEFT JOIN landmark_categories lc ON lc.landmark_id = l.slug
 LEFT JOIN categories c ON c.id = lc.category_id
 GROUP BY
-    l.id,
+    l.slug,
     l.title,
     l.subtitle,
     l.short_description,
@@ -96,7 +96,7 @@ GROUP BY
 
 CREATE OR REPLACE FUNCTION get_landmarks_by_era(p_era_id INTEGER)
 RETURNS TABLE (
-    id UUID,
+    slug VARCHAR,
     title VARCHAR,
     year_of_construction VARCHAR,
     short_description TEXT,
@@ -106,7 +106,7 @@ LANGUAGE sql
 STABLE
 AS $$
     SELECT
-        l.id,
+        l.slug,
         l.title,
         l.year_of_construction,
         l.short_description,
@@ -158,7 +158,7 @@ LANGUAGE plpgsql
 AS $$
 BEGIN
     INSERT INTO landmark_audit_log (landmark_id, action)
-    VALUES (NEW.id, TG_OP);
+    VALUES (NEW.slug, TG_OP);
     RETURN NEW;
 END;
 $$;

@@ -12,7 +12,7 @@ describe('LandmarksService', () => {
   let repository: jest.Mocked<Repository<Landmark>>;
 
   const mockLandmark = {
-    id: '11111111-1111-1111-1111-111111111111',
+    slug: 'gostinye-dvory',
     title: 'Гостиные дворы',
     shortDescription: 'Test',
     yearOfConstruction: '1684 г.',
@@ -73,10 +73,10 @@ describe('LandmarksService', () => {
     expect(qb.andWhere).toHaveBeenCalledWith('era.id = :eraId', { eraId: 1 });
   });
 
-  it('should return landmark by id', async () => {
+  it('should return landmark by slug', async () => {
     repository.findOne.mockResolvedValue(mockLandmark);
 
-    const result = await service.findOne(mockLandmark.id);
+    const result = await service.findOne(mockLandmark.slug);
 
     expect(result).toEqual(mockLandmark);
   });
@@ -84,7 +84,7 @@ describe('LandmarksService', () => {
   it('should throw NotFoundException when landmark missing', async () => {
     repository.findOne.mockResolvedValue(null);
 
-    await expect(service.findOne('missing-id')).rejects.toThrow(
+    await expect(service.findOne('missing-slug')).rejects.toThrow(
       NotFoundException,
     );
   });

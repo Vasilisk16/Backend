@@ -7,7 +7,7 @@ import { CreateLandmarkDto, UpdateLandmarkDto } from './dto/landmark-admin.dto.j
 @AdminResource({
   model: Landmark,
   list: [
-    'id',
+    'slug',
     'title',
     'yearOfConstruction',
     'address',
@@ -15,8 +15,9 @@ import { CreateLandmarkDto, UpdateLandmarkDto } from './dto/landmark-admin.dto.j
     'styleId',
     'createdAt',
   ],
-  search: ['title', 'shortDescription', 'address'],
-  readonly: ['id', 'createdAt', 'updatedAt'],
+  listDisplayLinks: ['slug'],
+  search: ['title', 'shortDescription', 'address', 'slug'],
+  readonly: ['createdAt', 'updatedAt'],
   schema: adminSchemaFromClassValidator({
     createDto: CreateLandmarkDto,
     updateDto: UpdateLandmarkDto,
