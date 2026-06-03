@@ -17,6 +17,10 @@ services:
         sync: false
       - key: POSTGRES_DATABASE
         sync: false
+      - key: POSTGRES_SSL_REJECT_UNAUTHORIZED
+        value: "false"
+      - key: POSTGRES_POOL_MAX
+        value: "5"
       - key: ADMIN_EMAIL
         sync: false
       - key: ADMIN_PASSWORD

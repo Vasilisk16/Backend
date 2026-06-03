@@ -32,6 +32,14 @@ import { ReferencesModule } from './references/references.module.js';
               }
             : { rejectUnauthorized: false };
 
+        const poolMax = Math.min(
+          Math.max(
+            Number(configService.get<string>('POSTGRES_POOL_MAX') ?? 5),
+            1,
+          ),
+          20,
+        );
+
         return {
           type: 'postgres' as const,
           host: configService.get<string>('POSTGRES_HOST'),
@@ -42,11 +50,11 @@ import { ReferencesModule } from './references/references.module.js';
           autoLoadEntities: true,
           synchronize: false,
           ssl: sslConfig,
-          poolSize: 1,
+          poolSize: poolMax,
           extra: {
-            max: 1,
-            min: 1,
-            idleTimeoutMillis: 60000,
+            max: poolMax,
+            min: 0,
+            idleTimeoutMillis: 30000,
             connectionTimeoutMillis: 30000,
             keepAlive: true,
             keepAliveInitialDelayMillis: 10000,
