@@ -83,8 +83,9 @@ describe('LandmarksService', () => {
 
     await service.findAll({ eraId: 1, page: 1, limit: 12 });
 
-    expect(qb.innerJoin).toHaveBeenCalledWith('landmark.era', 'era');
-    expect(qb.andWhere).toHaveBeenCalledWith('era.id = :eraId', { eraId: 1 });
+    expect(qb.andWhere).toHaveBeenCalledWith('landmark.eraId = :eraId', {
+      eraId: 1,
+    });
   });
 
   it('should return landmark by slug', async () => {

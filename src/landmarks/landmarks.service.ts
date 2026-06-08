@@ -102,16 +102,16 @@ export class LandmarksService {
     const qb = this.landmarkRepository.createQueryBuilder('landmark');
 
     if (query.eraId) {
-      qb.innerJoin('landmark.era', 'era').andWhere('era.id = :eraId', {
-        eraId: query.eraId,
-      });
+      qb.andWhere('landmark.eraId = :eraId', { eraId: query.eraId });
     }
 
     if (query.categoryId) {
-      qb.innerJoin(
-        'landmark.categories',
-        'filterCategory',
-        'filterCategory.id = :categoryId',
+      qb.andWhere(
+        `landmark.id IN (
+          SELECT lc.landmark_id
+          FROM landmark_categories lc
+          WHERE lc.category_id = :categoryId
+        )`,
         { categoryId: query.categoryId },
       );
     }
