@@ -54,10 +54,11 @@ import { ReferencesModule } from './references/references.module.js';
           extra: {
             max: poolMax,
             min: 0,
-            idleTimeoutMillis: 30000,
+            idleTimeoutMillis: 20000,
             connectionTimeoutMillis: 30000,
             keepAlive: true,
             keepAliveInitialDelayMillis: 10000,
+            maxUses: 500,
             ssl: sslConfig,
           },
           retryAttempts: 3,

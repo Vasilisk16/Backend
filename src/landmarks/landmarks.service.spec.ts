@@ -18,6 +18,26 @@ describe('LandmarksService', () => {
     yearOfConstruction: '1684 г.',
   } as Landmark;
 
+  const createMockQb = (overrides: Record<string, unknown> = {}) => {
+    const qb = {
+      innerJoin: jest.fn().mockReturnThis(),
+      andWhere: jest.fn().mockReturnThis(),
+      select: jest.fn().mockReturnThis(),
+      orderBy: jest.fn().mockReturnThis(),
+      skip: jest.fn().mockReturnThis(),
+      take: jest.fn().mockReturnThis(),
+      leftJoinAndSelect: jest.fn().mockReturnThis(),
+      where: jest.fn().mockReturnThis(),
+      clone: jest.fn(),
+      getCount: jest.fn().mockResolvedValue(1),
+      getMany: jest.fn().mockResolvedValue([{ id: 'gostinye-dvory' }]),
+      ...overrides,
+    };
+
+    qb.clone.mockReturnValue(qb);
+    return qb;
+  };
+
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
@@ -37,16 +57,14 @@ describe('LandmarksService', () => {
   });
 
   it('should return paginated landmarks', async () => {
-    const qb = {
-      leftJoinAndSelect: jest.fn().mockReturnThis(),
-      orderBy: jest.fn().mockReturnThis(),
-      andWhere: jest.fn().mockReturnThis(),
-      skip: jest.fn().mockReturnThis(),
-      take: jest.fn().mockReturnThis(),
-      getManyAndCount: jest.fn().mockResolvedValue([[mockLandmark], 1]),
-    };
+    const filterQb = createMockQb();
+    const loadQb = createMockQb({
+      getMany: jest.fn().mockResolvedValue([mockLandmark]),
+    });
 
-    repository.createQueryBuilder.mockReturnValue(qb as never);
+    repository.createQueryBuilder
+      .mockReturnValueOnce(filterQb as never)
+      .mockReturnValueOnce(loadQb as never);
 
     const query: FindLandmarksQueryDto = { page: 1, limit: 12 };
     const result = await service.findAll(query);
@@ -57,19 +75,15 @@ describe('LandmarksService', () => {
   });
 
   it('should apply era filter', async () => {
-    const qb = {
-      leftJoinAndSelect: jest.fn().mockReturnThis(),
-      orderBy: jest.fn().mockReturnThis(),
-      andWhere: jest.fn().mockReturnThis(),
-      skip: jest.fn().mockReturnThis(),
-      take: jest.fn().mockReturnThis(),
-      getManyAndCount: jest.fn().mockResolvedValue([[], 0]),
-    };
+    const qb = createMockQb({
+      getCount: jest.fn().mockResolvedValue(0),
+    });
 
     repository.createQueryBuilder.mockReturnValue(qb as never);
 
     await service.findAll({ eraId: 1, page: 1, limit: 12 });
 
+    expect(qb.innerJoin).toHaveBeenCalledWith('landmark.era', 'era');
     expect(qb.andWhere).toHaveBeenCalledWith('era.id = :eraId', { eraId: 1 });
   });
 
