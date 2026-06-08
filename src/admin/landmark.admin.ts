@@ -13,6 +13,7 @@ import { CreateLandmarkDto, UpdateLandmarkDto } from './dto/landmark-admin.dto.j
     'address',
     'eraId',
     'styleId',
+    'categories',
     'createdAt',
   ],
   listDisplayLinks: ['id'],

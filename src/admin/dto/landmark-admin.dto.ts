@@ -1,4 +1,7 @@
+import { AdminField } from 'nestjs-dj-admin';
+import { Type } from 'class-transformer';
 import {
+  IsArray,
   IsInt,
   IsOptional,
   IsString,
@@ -7,6 +10,15 @@ import {
   MaxLength,
 } from 'class-validator';
 import { slugPattern } from '../../common/slug.util.js';
+
+const categoryRelationField = () =>
+  AdminField({
+    label: 'Категории',
+    relation: {
+      kind: 'many-to-many',
+      option: { resource: 'categories', labelField: 'name', valueField: 'id' },
+    },
+  });
 
 export class CreateLandmarkDto {
   @IsString()
@@ -59,6 +71,13 @@ export class CreateLandmarkDto {
 
   @IsInt()
   legalStatusId: number;
+
+  @categoryRelationField()
+  @IsOptional()
+  @IsArray()
+  @IsInt({ each: true })
+  @Type(() => Number)
+  categories?: number[];
 }
 
 export class UpdateLandmarkDto {
@@ -122,4 +141,11 @@ export class UpdateLandmarkDto {
   @IsOptional()
   @IsInt()
   legalStatusId?: number;
+
+  @categoryRelationField()
+  @IsOptional()
+  @IsArray()
+  @IsInt({ each: true })
+  @Type(() => Number)
+  categories?: number[];
 }
